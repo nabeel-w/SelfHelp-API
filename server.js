@@ -6,6 +6,7 @@ import cron from 'node-cron';
 import User from "./models/user.js";
 import sanatize from "./middleware/sanatize.js"
 import authRoute from "./routes/authRoute.js"
+import chatRoute from "./routes/chatRoute.js"
 
 dotenv.config();
 const app=express();
@@ -36,6 +37,7 @@ try{
 }
 
 app.use("/api/auth",authRoute);
+app.use("/api/bot",chatRoute);
 
 
 app.listen(PORT,()=>{

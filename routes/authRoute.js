@@ -62,6 +62,7 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", async (req, res) => {
     const userInfo = req.body.phoneNumber || req.body.email;
+    const password=req.body.password;
     const conditions = [
         { email: userInfo },
         { phoneNumber: userInfo }
