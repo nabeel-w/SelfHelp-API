@@ -13,19 +13,19 @@ const openai = new OpenAI({
     apiKey: process.env.GPT_API_KEY,
 });
 
-async function getPreviousChats(id){
-    const userChats=await Chat.find({userId:id});
-    const messages= userChats.map(chat=>{
+async function getPreviousChats(id) {
+    const userChats = await Chat.find({ userId: id });
+    const messages = userChats.map(chat => {
         return {
-            role:chat.chatBot?"assistant":"user",
-            content:chat.message
+            role: chat.chatBot ? "assistant" : "user",
+            content: chat.message
         }
     })
     return messages;
 }
 
-async function sendMessage(message,id,res) {
-    const prevMessages=await getPreviousChats(id)
+async function sendMessage(message, id, res) {
+    const prevMessages = await getPreviousChats(id)
     const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: [
@@ -35,33 +35,43 @@ async function sendMessage(message,id,res) {
             },
             ...prevMessages,
             {
-                role:'user',
-                content:message
+                role: 'user',
+                content: message
             }
         ]
     });
     //console.log(response.choices);
-    if(response.choices[0].finish_reason!=='stop') return res.status(500).json({ err:"Invalid Chat Response " });
-    const botResponse=response.choices[0].message.content;
+    if (response.choices[0].finish_reason !== 'stop') return res.status(500).json({ err: "Invalid Chat Response " });
+    const botResponse = response.choices[0].message.content;
     return botResponse;
 }
 
-router.post("/chat",verifyToken,async(req,res)=>{
-    const message=req.body.userMessage;
+router.post("/chat", verifyToken, async (req, res) => {
+    const message = req.body.userMessage;
     const { id } = req.decoded;
     await Chat.create({
-        userId:id,
-        chatBot:false,
-        message:message
+        userId: id,
+        chatBot: false,
+        message: message
     });
-    const chatRes= await sendMessage(message,id,res);
+    const chatRes = await sendMessage(message, id, res);
     await Chat.create({
-        userId:id,
-        message:chatRes
+        userId: id,
+        message: chatRes
     });
     return res.status(200).json({ message: chatRes })
     //console.log(chatRes);
 });
+
+router.get("/chat", verifyToken, async (req, res) => {
+    const { id } = req.decoded;
+    try {
+        const prevChats = await Chat.find({ userId: id });
+        return res.status(200).json({ prevChats });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+})
 
 // await sendMessage("Hi i'm nabeel , who are you?");
 // await sendMessage("okay Dr. SelfHelp, who am I ");
