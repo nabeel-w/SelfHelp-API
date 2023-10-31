@@ -121,11 +121,3 @@ To access protected routes, include an authentication token in the request heade
 
 - **Key**: Authorization
 - **Value**: Bearer {your-auth-token}
-
-## Conclusion
-
-This API allows you to create user accounts, log in, verify phone numbers, and interact with a chatbot. Use the provided endpoints and authentication token to integrate these features into your frontend application.
-
-If you have any questions or encounter issues, please contact our support team at [support@your-api-provider.com](mailto:support@your-api-provider.com).
-
-You can share this API documentation with your frontend developers, and they can refer to it while working with your API.
