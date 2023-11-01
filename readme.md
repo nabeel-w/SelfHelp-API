@@ -5,10 +5,6 @@
 
 Welcome to the API Documentation for your application. This API serves as the backend for your chat application, providing user authentication, chatbot interaction, and scheduled cleanup of unverified users.
 
-### Base URL
-
-The base URL for the API is `https://your-api-url.com`.
-
 ## Authentication Routes
 
 ### 1. User Registration
