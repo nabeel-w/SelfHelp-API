@@ -1,6 +1,3 @@
-
-# API Documentation
-
 ## Introduction
 
 Welcome to the API Documentation for your application. This API serves as the backend for your chat application, providing user authentication, chatbot interaction, and scheduled cleanup of unverified users.
